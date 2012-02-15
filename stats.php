@@ -1,5 +1,4 @@
 <?php
-//echo "Hello stats!<br/>";
 require_once('globals.php');
 
 function queryThis($sql)
@@ -23,7 +22,6 @@ function queryThis($sql)
 	
 	return $result;
 }
-//echo "query this<br/>";
 
 function updateStats($teamno)
 {
@@ -49,10 +47,7 @@ function updateStats($teamno)
 		die($message);
 	}
 	
-	//echo'<br/>';
 	$row = mysql_fetch_array($result);
-	//var_dump($row);
-	//echo'<br/>';
 	$final=$row[0];
 	$raw=$row[1];
 	$penalty=$row[2];
@@ -81,7 +76,6 @@ function updateStats($teamno)
 		$message .= 'Whole query: ' . $sql . 'Press back!';
 		die($message);
 	}
-	//echo "score averages<br/>";
 	$sql = "select count(A.sid)\n"
     . "FROM Alliance A \n"
     . "WHERE A.t1id='".$tn."'\n"
@@ -90,7 +84,6 @@ function updateStats($teamno)
 	
 	$matchesarry=mysql_fetch_array(queryThis($sql));
 	$matches = intval($matchesarry[0]);
-	//echo "matches<br/>";
 	
 	$sql = "select count(B.aid)\n"
     . "from brokeWith B\n"
@@ -98,7 +91,6 @@ function updateStats($teamno)
 	
 	$brokenarry=mysql_fetch_array(queryThis($sql));
 	$broken = intval($brokenarry[0]);
-	//echo "broken<br/>";
 	
 	$reliability=1-($broken/$matches);
 	
@@ -164,14 +156,11 @@ function updateStats($teamno)
 	
 	$dalliancesq=queryThis($sql);
 	
-	//echo $sql."<br/>";
 	
 	$dalliances=array();
 	
 	while($row = mysql_fetch_array($dalliancesq)) 
 	{
-		//var_dump($row);
-		//echo "<br/>";
 		array_push($dalliances,$row['aid']);
 	}
 	
@@ -221,12 +210,6 @@ function updateStats($teamno)
     . "WHERE teamno='".$tn."'";
 	
 	queryThis($sql);
-	
-	/*echo $sql."<br/>".$dopavg."<br/>".$dopcount."<br/>";
-	var_dump($dopponents);
-	echo"<br/>";
-	var_dump($dalliances);
-	echo"<br/>";*/
 	
 	mysql_close();
 }

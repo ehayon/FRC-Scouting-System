@@ -1,16 +1,12 @@
 <?php
 //error_reporting(E_ALL);
 //ini_set('display_errors', 'On');
-//echo "Hello world!<br/>";
 include 'themvars.php';
-//echo "themvars<br/>";
-require_once('stats.php');//include 'stats.php';
-//echo "stats<br/>";
+require_once('stats.php');
 
 $connect=mysql_connect($server,$username,$password); 
 mysql_select_db($database) or die( "Unable to open database");
 
-//echo "query function<br/>";
 
 function MatchName($tourn,$session,$matchno)
 {
@@ -21,7 +17,6 @@ function AllianceName($tourn,$session,$matchno,$color)
 {
 	return substr($tourn,0,5).$session.$matchno.$color;
 }
-//echo "string gen functions<br/>";
 
 function insertTeam($teamno,$connect)
 {
@@ -67,7 +62,6 @@ function insertDefensive($teamno,$tourn,$session,$matchno,$color,$connect)
 {
 	return 'INSERT IGNORE INTO defensiveWith Values(\''.mysql_real_escape_string($teamno,$connect).'\',\''.mysql_real_escape_string(AllianceName($tourn,$session,$matchno,$color),$connect).'\');';//\''..'\',
 }
-//echo "query gen functions<br/>";
 
 queryThis(insertTeam($_POST['teamno1B'],$connect));
 queryThis(insertTeamAvgScore($_POST['teamno1B'],$connect));
@@ -81,7 +75,6 @@ queryThis(insertTeam($_POST['teamno2R'],$connect));
 queryThis(insertTeamAvgScore($_POST['teamno2R'],$connect));
 queryThis(insertTeam($_POST['teamno3R'],$connect));
 queryThis(insertTeamAvgScore($_POST['teamno3R'],$connect));
-//echo"Team check done<br/>";
 
 queryThis(insertIsAt($_POST['teamno1B'],$_POST['tournament'],$connect));
 queryThis(insertIsAt($_POST['teamno2B'],$_POST['tournament'],$connect));
@@ -90,21 +83,16 @@ queryThis(insertIsAt($_POST['teamno1R'],$_POST['tournament'],$connect));
 queryThis(insertIsAt($_POST['teamno2R'],$_POST['tournament'],$connect));
 queryThis(insertIsAt($_POST['teamno3R'],$_POST['tournament'],$connect));
 queryThis(insertIsAt($_POST['teamno3R'],$_POST['tournament'],$connect));
-//echo"Team location done<br/>";
 
 queryThis(insertAlliance($_POST['teamno1B'],$_POST['teamno2B'],$_POST['teamno3B'],$_POST['tournament'],$_POST['session'],$_POST['matchno'],'B',$connect));
 queryThis(insertAlliance($_POST['teamno1R'],$_POST['teamno2R'],$_POST['teamno3R'],$_POST['tournament'],$_POST['session'],$_POST['matchno'],'R',$connect));
-//echo"Alliances done<br/>";
 
 queryThis(insertScore($_POST['rawR'],$_POST['penaltyR'],$_POST['finalR'],$_POST['tournament'],$_POST['session'],$_POST['matchno'],'R',$connect));
 queryThis(insertScore($_POST['rawB'],$_POST['penaltyB'],$_POST['finalB'],$_POST['tournament'],$_POST['session'],$_POST['matchno'],'B',$connect));
-//echo"Scores done<br/>";
 
 queryThis(insertMatch($_POST['tournament'],$_POST['session'],$_POST['matchno'],$connect));
-//echo"Match done<br/>";
 
 queryThis(insertHappenedAt($_POST['tournament'],$_POST['session'],$_POST['matchno'],$connect));
-//echo"Match location done<br/>";
 
 
 if(strcmp($_POST['broken1B'],'on')==0)
@@ -136,7 +124,6 @@ if(strcmp($_POST['broken3R'],'on')==0)
 	queryThis(insertBroke($_POST['teamno3R'],$_POST['tournament'],$_POST['session'],$_POST['matchno'],'R',$connect));
 	
 }
-//echo"Broken done<br/>";
 
 if(strcmp($_POST['defense1B'],'on')==0)
 {
@@ -168,9 +155,7 @@ if(strcmp($_POST['defense3R'],'on')==0)
 	queryThis(insertDefensive($_POST['teamno3R'],$_POST['tournament'],$_POST['session'],$_POST['matchno'],'R',$connect));
 	
 }
-//echo"Defense done<br/>";
 
-//sleep(1);
 
 updateStats($_POST['teamno1B']);
 updateStats($_POST['teamno2B']);
@@ -178,7 +163,6 @@ updateStats($_POST['teamno3B']);
 updateStats($_POST['teamno1R']);
 updateStats($_POST['teamno2R']);
 updateStats($_POST['teamno3R']);
-//echo"Stats done<br/>";
 
 
 mysql_close();

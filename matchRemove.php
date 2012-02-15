@@ -33,7 +33,6 @@ foreach ($alliances as $value)
 	array_push($teams,$row['t3id']);
 }
 
-//var_dump($teams);
 
 foreach ($alliances as $value)
 {
@@ -76,7 +75,6 @@ foreach ($toRem as $value)
 	$result=queryThis($sql);
 }
 
-//remTournament($_POST['tName']);
 
 header( 'Location: matchRem.php' ) ;
 ?>

@@ -95,7 +95,7 @@ session_start(); ?>
 		}
 		else if(strcmp($_GET['act'],'create')==0)
 		{
-			//create databases
+			//TODO: create databases
 		}
 		?>
 	</body>

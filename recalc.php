@@ -7,8 +7,6 @@ $result=queryThis($sql);
 
 while($row = mysql_fetch_array($result))
 {
-	//var_dump($row);
-	//echo"<br/>";
 	updateStats($row['teamno']);
 }
 

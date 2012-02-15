@@ -1,5 +1,4 @@
 <?php
-//echo "Hello vars!<br/>";
 require_once('globals.php');
 $username=$GLOBALS['username'];
 $password=$GLOBALS['password'];
@@ -16,7 +15,6 @@ function newTournament($tName,$loc,$year,$mo,$day)
 	mysql_select_db($database) or die( "Unable to open database");
 	
 	$myString='INSERT IGNORE INTO Tournament VALUES(\''.mysql_real_escape_string($tName,$connect).'\',\''.mysql_real_escape_string($loc,$connect).'\',\''.mysql_real_escape_string($year,$connect).mysql_real_escape_string($mo,$connect).mysql_real_escape_string($day,$connect).'\')';//dcfe700ace79a58e7b71975b3b97d58e
-	//$Clean = mysql_real_escape_string($myString,$connect); 
 	$result = mysql_query($myString);
 	if (!$result) 
 	{
@@ -27,24 +25,17 @@ function newTournament($tName,$loc,$year,$mo,$day)
 	
 	mysql_close();
 }
-//echo "Hello newT!<br/>";
 function remTournament($tName)
 {
-	//echo "entered<br/>";
 	$username=$GLOBALS['username'];
 	$password=$GLOBALS['password'];
 	$database=$GLOBALS['database'];
 	$server=$GLOBALS['server'];
 	$connect=mysql_connect($server,$username,$password); 
 	mysql_select_db($database) or die( "Unable to open database");
-	//echo "in db<br/>";
 	
 	$myString='DELETE FROM Tournament WHERE tname=\''.mysql_real_escape_string($tName,$connect).'\'';
-	//echo 'made: '.$myString.'<br/>';
-	$Clean = $myString;// mysql_real_escape_string($myString,$connect); 
-	//echo "query?<br/>";
 	$result = mysql_query($Clean);
-	//echo "query!<br/>";
 	if (!$result) 
 	{
 		$message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -54,7 +45,6 @@ function remTournament($tName)
 	
 	mysql_close();
 }
-//echo "Hello remT!<br/>";
 
 function genRemoveTable()
 {
@@ -81,7 +71,6 @@ function genRemoveTable()
     } 
 	mysql_close();
 }
-//echo "Hello genremt!<br/>";
 
 function genRemoveMTable($tname)
 {

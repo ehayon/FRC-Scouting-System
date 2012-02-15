@@ -71,7 +71,6 @@
 		<center>
 		<table>
 		<?php
-		//include 'themvars.php';
 		genRemoveMTable($_POST['comp']);
 		?>
 		</table>
