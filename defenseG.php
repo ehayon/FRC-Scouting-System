@@ -4,7 +4,7 @@ include 'themvars.php';
 $connect=mysql_connect($server,$username,$password); 
 		
 mysql_select_db($database) or die( "Unable to open database");
-if(strlen($_GET['comp'])==0)
+if(strlen($_GET['comp'])==0)//check for competiton filter
 {
 	$query="Select * from Team T ORDER BY defense;";
 }
@@ -12,26 +12,26 @@ else
 {
 	$query="Select * FROM `Team` T, isAt I WHERE T.teamno=I.teamno AND I.tname='".$_GET['comp']."' ORDER BY defense;";
 }
-$result=mysql_query($query,$connect);
+$result=mysql_query($query,$connect);//query
 if (!$result) 
 {
 	die('Invalid query: ' . mysql_error());
 }
 
-$data=array();
-$data2=array();
+$teamno=array();//initialize arrays
+$defense_score=array();
 
-while($row = mysql_fetch_array($result))
+while($row = mysql_fetch_array($result))//populate arrays
 {
-	array_push($data,$row['teamno']);
-	array_push($data2,$row['defense']);
+	array_push($teamno,$row['teamno']);
+	array_push($defense_score,$row['defense']);
 }
 
-$data=array_combine($data,$data2);
+$teamno=array_combine($teamno,$defense_score);//pair score with keys
 
 
-$graph = new PHPGraphLib(942,700);
-$graph->addData($data);
+$graph = new PHPGraphLib(942,700);//draw PNG
+$graph->addData($teamno);
 $graph->setGradient("242,148,34","242,131,34");
 $graph->setDataValues(false);
 $graph->setTitle('Team Defense');

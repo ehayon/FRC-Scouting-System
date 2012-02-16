@@ -4,7 +4,7 @@ include 'themvars.php';
 $connect=mysql_connect($server,$username,$password); 
 		
 mysql_select_db($database) or die( "Unable to open database");
-if(strlen($_GET['comp'])==0)
+if(strlen($_GET['comp'])==0)//Check if there is a filter for competition
 {
 	$query = "SELECT S.sid, S.raw, S.penalty, S.final FROM Score S, Team T WHERE S.sid=T.teamno ORDER BY final";
 }
@@ -12,30 +12,30 @@ else
 {
 	$query = "SELECT S.sid, S.raw, S.penalty, S.final FROM Score S, isAt I WHERE S.sid=I.teamno AND I.tname='".$_GET['comp']."' ORDER BY final;";
 }
-$result=mysql_query($query,$connect);
+$result=mysql_query($query,$connect); //send query
 if (!$result) 
 {
 	die('Invalid query: ' . mysql_error());
 }
 
-$data=array();
-$data2=array();
-$data3=array();
-$data4=array();
+$score_id=array();//initialize arrays
+$final_data=array();
+$penalty_data=array();
+$raw_score_data=array();
 
-while($row = mysql_fetch_array($result))
+while($row = mysql_fetch_array($result))//populate arrays
 {
-	array_push($data,$row['sid']);
-	array_push($data2,$row['final']);
-	array_push($data3,$row['penalty']);
-	array_push($data4,$row['raw']);
+	array_push($score_id,$row['sid']);
+	array_push($final_data,$row['final']);
+	array_push($penalty_data,$row['penalty']);
+	array_push($raw_score_data,$row['raw']);
 }
 
-$final=array_combine($data,$data2);
-$penalty=array_combine($data,$data3);
-$raw=array_combine($data,$data4);
+$final=array_combine($score_id,$final_data);//pair array with keys
+$penalty=array_combine($score_id,$penalty_data);
+$raw=array_combine($score_id,$raw_score_data);
 
-$graph = new PHPGraphLib(942,700);
+$graph = new PHPGraphLib(942,700);//draw graph PNG
 $graph->addData($final,$penalty,$raw);
 $graph->setGradient("242,148,34","242,131,34");
 $graph->setDataValues(false);

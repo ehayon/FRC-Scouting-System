@@ -1,7 +1,7 @@
 <?php
 require_once('globals.php');
 
-function queryThis($sql)
+function queryThis($sql)//queries the database with given string
 {
 	$username=$GLOBALS['username'];
 	$password=$GLOBALS['password'];
@@ -23,7 +23,7 @@ function queryThis($sql)
 	return $result;
 }
 
-function updateStats($teamno)
+function updateStats($teamno)//performs stats calculations on a given teamno
 {
 	$username=$GLOBALS['username'];
 	$password=$GLOBALS['password'];
@@ -38,7 +38,7 @@ function updateStats($teamno)
     . "WHERE (A.t1id='".$tn."'\n"
     . "OR A.t2id='".$tn."'\n"
     . "OR A.t3id='".$tn."')\n"
-    . "AND A.sid=S.sid";
+    . "AND A.sid=S.sid";//get the average score of a given team
 	$result = mysql_query($sql);
 	if (!$result) 
 	{
@@ -52,7 +52,7 @@ function updateStats($teamno)
 	$raw=$row[1];
 	$penalty=$row[2];
 	
-	if($final==NULL)
+	if($final==NULL)//non-nulls null responses
 	{
 		$final=0;
 	}
@@ -67,7 +67,7 @@ function updateStats($teamno)
 	
 	$sql = "UPDATE Score\n"
     . "SET final=".$final.", raw=".$raw.", penalty=".$penalty."\n"
-    . "WHERE sid='".$tn."'";
+    . "WHERE sid='".$tn."'";//updates team entry on score table
 	
 	$result = mysql_query($sql);
 	if (!$result) 
@@ -80,14 +80,14 @@ function updateStats($teamno)
     . "FROM Alliance A \n"
     . "WHERE A.t1id='".$tn."'\n"
     . "OR A.t2id='".$tn."'\n"
-    . "OR A.t3id='".$tn."'";
+    . "OR A.t3id='".$tn."'";//counts number of matches
 	
 	$matchesarry=mysql_fetch_array(queryThis($sql));
 	$matches = intval($matchesarry[0]);
 	
 	$sql = "select count(B.aid)\n"
     . "from brokeWith B\n"
-    . "where B.teamno='".$tn."';";
+    . "where B.teamno='".$tn."';";//counts broken games
 	
 	$brokenarry=mysql_fetch_array(queryThis($sql));
 	$broken = intval($brokenarry[0]);
@@ -99,7 +99,7 @@ function updateStats($teamno)
     . "WHERE (A.t1id='".$tn."'\n"
     . "OR A.t2id='".$tn."'\n"
     . "OR A.t3id='".$tn."')\n"
-    . "AND A.sid=S.sid";
+    . "AND A.sid=S.sid";//gets list of alliances
 	
 	$allianceq=queryThis($sql);
 	
@@ -112,7 +112,7 @@ function updateStats($teamno)
 	
 	$opponents=array();
 	
-	foreach($alliances as $alliance)
+	foreach($alliances as $alliance)//generates list of oposing alliances by switching B(blue) to R(red) and vice-versa
 	{
 		if($alliance[strlen($alliance)-1]=='B')
 		{
@@ -128,7 +128,7 @@ function updateStats($teamno)
 	$opcount=count($opponents);
 	$opavg=0.0;
 	
-	foreach($opponents as $alliance)
+	foreach($opponents as $alliance)//gets list of final opponent scores
 	{
 		$sql = "select S.final\n"
 		. "FROM Score S\n"
@@ -152,7 +152,7 @@ function updateStats($teamno)
 	
 	$sql = "select D.aid\n"
     . "FROM defensiveWith D\n"
-    . "WHERE D.teamno='".$tn."';";
+    . "WHERE D.teamno='".$tn."';";//get defensive matches
 	
 	$dalliancesq=queryThis($sql);
 	
@@ -207,7 +207,7 @@ function updateStats($teamno)
 	
 	$sql = "UPDATE Team\n"
     . "SET reliability=".$reliability.", offense=".$offense.", defense=".$defense."\n"
-    . "WHERE teamno='".$tn."'";
+    . "WHERE teamno='".$tn."'";//update team stats
 	
 	queryThis($sql);
 	
